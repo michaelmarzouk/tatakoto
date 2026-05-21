@@ -28,9 +28,8 @@ export const articles: Article[] = [
     date: '2026-05-21',
     updated: '2026-05-21',
     author: {
-      name: 'Dr. Camille Roux',
-      role: 'Médecin rédactrice — IA et imagerie médicale',
-      orcid: 'https://orcid.org/0000-0000-0000-0000',
+      name: 'Tatakoto',
+      role: '',
     },
     tags: ['ai', 'medical'],
     readTime: 8,

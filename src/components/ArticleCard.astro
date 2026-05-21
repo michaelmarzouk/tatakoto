@@ -8,16 +8,14 @@ interface Props {
   title: string;
   description: string;
   date: string;
-  author: string;
   readTime?: number;
   tags?: ('ai' | 'medical')[];
 }
-const { lang, href, title, description, date, author, readTime, tags = [] } = Astro.props;
+const { lang, href, title, description, date, readTime, tags = [] } = Astro.props;
 ---
 <a href={href} class="card unstyled">
   <div class="card-meta">
     <span class="label-meta">{new Date(date).toLocaleDateString(lang, { day: 'numeric', month: 'long', year: 'numeric' })}</span>
-    <span class="card-author">· {author}</span>
     {readTime && <span class="card-read"> · {readTime} {t(lang, 'article.minutes')}</span>}
   </div>
   <h3 class="card-title">{title}</h3>

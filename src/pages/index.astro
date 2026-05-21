@@ -1,4 +1,59 @@
 ---
-// Redirect root to /fr (default locale)
-return Astro.redirect('/fr', 302);
+// Page racine — detection de langue du navigateur, redirection sans contenu visible.
+// Supporte fr / en / es / zh, fallback anglais.
 ---
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tatakoto</title>
+<meta name="description" content="Tatakoto decodes scientific research on artificial intelligence applied to medicine." />
+
+<link rel="canonical" href="https://tatakoto.io/" />
+<link rel="alternate" hreflang="fr-FR" href="https://tatakoto.io/fr" />
+<link rel="alternate" hreflang="en-US" href="https://tatakoto.io/en" />
+<link rel="alternate" hreflang="es-ES" href="https://tatakoto.io/es" />
+<link rel="alternate" hreflang="zh-CN" href="https://tatakoto.io/zh" />
+<link rel="alternate" hreflang="x-default" href="https://tatakoto.io/en" />
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32.png" />
+
+<script is:inline>
+(function () {
+  var supported = ['fr', 'en', 'es', 'zh'];
+  var fallback = 'en';
+  var langs = navigator.languages && navigator.languages.length
+    ? navigator.languages
+    : [navigator.language || navigator.userLanguage || ''];
+  var target = fallback;
+  for (var i = 0; i < langs.length; i++) {
+    var code = String(langs[i] || '').toLowerCase().split('-')[0];
+    if (supported.indexOf(code) !== -1) { target = code; break; }
+  }
+  window.location.replace('/' + target + '/');
+})();
+</script>
+
+<noscript>
+  <meta http-equiv="refresh" content="0; url=/en/" />
+</noscript>
+
+<style>
+  html, body { margin: 0; padding: 0; background: #FFF8E7; }
+  .fallback-nav {
+    position: absolute; left: -10000px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+</style>
+</head>
+<body>
+<nav class="fallback-nav" aria-label="Language selection">
+  <a href="/en/">English</a>
+  <a href="/fr/">Français</a>
+  <a href="/es/">Español</a>
+  <a href="/zh/">中文</a>
+</nav>
+</body>
+</html>
