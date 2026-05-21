@@ -1,0 +1,72 @@
+---
+import type { GetStaticPaths } from 'astro';
+import type { Lang } from '../../../consts';
+import { LANGS } from '../../../consts';
+import { ROUTES, t } from '../../../i18n/ui';
+import { articles } from '../../../data/articles';
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ArticleCard from '../../../components/ArticleCard.astro';
+
+export const getStaticPaths = (() => {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}) satisfies GetStaticPaths;
+
+const { lang } = Astro.params as { lang: Lang };
+
+const translations: Partial<Record<Lang, string>> = {
+  fr: ROUTES.fr.decryptages,
+  en: ROUTES.en.decryptages,
+  es: ROUTES.es.decryptages,
+  zh: ROUTES.zh.decryptages,
+};
+
+const sortedArticles = [...articles].sort((a, b) =>
+  new Date(b.date).getTime() - new Date(a.date).getTime()
+);
+
+const titleMap = { fr: 'Décryptages', en: 'Decryptions', es: 'Análisis', zh: '解读' };
+const descMap = {
+  fr: 'Tous les décryptages de publications scientifiques sur Tatakoto.',
+  en: 'All scientific publication decryptions on Tatakoto.',
+  es: 'Todos los análisis de publicaciones científicas en Tatakoto.',
+  zh: 'Tatakoto上所有科学出版物的解读。',
+};
+---
+
+<BaseLayout
+  lang={lang}
+  title={titleMap[lang]}
+  description={descMap[lang]}
+  translations={translations}
+>
+  <section class="container list-section">
+    <div class="label-meta">{titleMap[lang]}</div>
+    <h1 class="list-title">{titleMap[lang]}</h1>
+    <p class="list-desc">{descMap[lang]}</p>
+    <div class="list-grid">
+      {sortedArticles.map((article) => (
+        <ArticleCard
+          lang={lang}
+          href={`${ROUTES[lang].decryptages}/${article.slug}`}
+          title={article.content[lang].title}
+          description={article.content[lang].description}
+          date={article.date}
+          author={article.author.name}
+          readTime={article.readTime}
+          tags={article.tags}
+        />
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .list-section { padding: 48px 0 64px; }
+  .list-title { margin: 6px 0 12px; font-size: 2rem; }
+  .list-desc { color: var(--text-soft); margin-bottom: 32px; max-width: 60ch; }
+  .list-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 18px;
+  }
+</style>

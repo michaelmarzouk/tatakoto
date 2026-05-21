@@ -1,0 +1,97 @@
+---
+import type { GetStaticPaths } from 'astro';
+import type { Lang } from '../../consts';
+import { LANGS } from '../../consts';
+import { ROUTES } from '../../i18n/ui';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const getStaticPaths = (() => {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}) satisfies GetStaticPaths;
+
+const { lang } = Astro.params as { lang: Lang };
+
+const translations: Partial<Record<Lang, string>> = {
+  fr: ROUTES.fr.about, en: ROUTES.en.about, es: ROUTES.es.about, zh: ROUTES.zh.about,
+};
+
+const content: Record<Lang, { title: string; description: string; body: string }> = {
+  fr: {
+    title: 'À propos',
+    description: 'Tatakoto vulgarise la recherche médicale en s\'appuyant sur l\'IA, avec la rigueur d\'un humain qui signe.',
+    body: `
+      <p class="lede"><strong>Tatakoto rend la recherche médicale lisible, vérifiable, et utile à un public non spécialiste — sans rien sacrifier de la précision.</strong></p>
+      <h2>Le projet</h2>
+      <p>Plus d'un million d'articles biomédicaux paraissent chaque année. Personne, en dehors d'une poignée de spécialistes, ne peut suivre. Tatakoto se place entre la publication brute (illisible) et la couverture grand public (souvent trompeuse). On vise la zone juste — celle où le lecteur comprend vraiment ce qu'une étude dit, ce qu'elle ne dit pas, et apprend à juger par lui-même.</p>
+      <h2>La méthode</h2>
+      <p>Chaque décryptage suit une grille rigoureuse : contexte, méthode, résultats en chiffres relatifs ET absolus, limites, et implications réelles. L'IA assiste la sélection, la première lecture et la traduction. Un humain — médecin ou scientifique nommé — relit, vérifie chaque chiffre contre la publication originale, et signe.</p>
+      <h2>Multilingue</h2>
+      <p>Tatakoto publie en français, anglais, espagnol et chinois. L'original est écrit en français ; les traductions sont produites par IA puis relues par un locuteur natif avant publication.</p>
+      <h2>Engagements</h2>
+      <p>Pas de publi-rédactionnel. Pas de publicité pharmaceutique. Financements publics. Corrections en moins de 48 heures avec mention visible. Transparence sur l'IA à la fin de chaque article.</p>
+    `,
+  },
+  en: {
+    title: 'About',
+    description: 'Tatakoto makes medical research readable, with AI assistance and the rigor of a human who signs.',
+    body: `
+      <p class="lede"><strong>Tatakoto makes medical research readable, verifiable, and useful to non-specialists — without sacrificing precision.</strong></p>
+      <h2>The project</h2>
+      <p>More than a million biomedical papers appear every year. No one outside a handful of specialists can keep up. Tatakoto sits between the raw publication (unreadable) and mainstream coverage (often misleading). We aim for the right zone — where the reader truly understands what a study says, what it doesn't say, and learns to judge for themselves.</p>
+      <h2>The method</h2>
+      <p>Each decryption follows a rigorous grid: context, method, results in relative AND absolute numbers, limits, real implications. AI assists selection, first reading, and translation. A named human — physician or scientist — reviews, verifies each figure against the original publication, and signs.</p>
+      <h2>Multilingual</h2>
+      <p>Tatakoto publishes in French, English, Spanish, and Chinese. The original is written in French; translations are produced by AI then reviewed by a native speaker before publication.</p>
+      <h2>Commitments</h2>
+      <p>No native advertising. No pharma ads. Public funding sources. Corrections under 48 hours with visible note. AI transparency at the end of every article.</p>
+    `,
+  },
+  es: {
+    title: 'Acerca de',
+    description: 'Tatakoto hace legible la investigación médica con la ayuda de la IA y el rigor de un humano que firma.',
+    body: `
+      <p class="lede"><strong>Tatakoto hace que la investigación médica sea legible, verificable y útil para no especialistas, sin sacrificar la precisión.</strong></p>
+      <h2>El proyecto</h2>
+      <p>Más de un millón de artículos biomédicos aparecen cada año. Nadie, salvo un puñado de especialistas, puede seguirlos. Tatakoto se ubica entre la publicación bruta (ilegible) y la cobertura general (a menudo engañosa). Buscamos la zona justa — donde el lector entiende realmente lo que dice un estudio, lo que no dice, y aprende a juzgar por sí mismo.</p>
+      <h2>El método</h2>
+      <p>Cada análisis sigue una rejilla rigurosa: contexto, método, resultados en cifras relativas Y absolutas, límites, implicaciones reales. La IA asiste la selección, la primera lectura y la traducción. Un humano nombrado — médico o científico — revisa, verifica cada cifra contra la publicación original y firma.</p>
+      <h2>Multilingüe</h2>
+      <p>Tatakoto publica en francés, inglés, español y chino. El original se escribe en francés; las traducciones se producen por IA y luego son revisadas por un hablante nativo antes de la publicación.</p>
+      <h2>Compromisos</h2>
+      <p>Sin contenido patrocinado. Sin publicidad farmacéutica. Fuentes de financiación públicas. Correcciones en menos de 48 horas con nota visible. Transparencia sobre la IA al final de cada artículo.</p>
+    `,
+  },
+  zh: {
+    title: '关于',
+    description: 'Tatakoto借助AI让医学研究变得易读，并由签名的人类严格审核。',
+    body: `
+      <p class="lede"><strong>Tatakoto让医学研究对非专业人士变得易读、可验证、有用——同时不牺牲精确性。</strong></p>
+      <h2>项目</h2>
+      <p>每年发表的生物医学论文超过一百万篇。除少数专家外，无人能跟上。Tatakoto处在原始出版物（难以阅读）与大众报道（常有误导）之间，旨在找到合适的位置——读者真正理解研究所说的、所未说的，并学会自己判断。</p>
+      <h2>方法</h2>
+      <p>每篇解读遵循严格的框架：背景、方法、相对和绝对数字的结果、局限性、实际意义。AI协助选题、初读和翻译。一位署名的人类——医生或科学家——审核、核对每个数字与原始出版物，并签名。</p>
+      <h2>多语言</h2>
+      <p>Tatakoto以法语、英语、西班牙语和中文发布。原稿以法语撰写；翻译由AI生成，发布前由母语者审核。</p>
+      <h2>承诺</h2>
+      <p>无原生广告。无医药广告。公开资金来源。48小时内更正并明确标注。每篇文章末尾透明说明AI的使用。</p>
+    `,
+  },
+};
+
+const c = content[lang];
+---
+<BaseLayout
+  lang={lang}
+  title={c.title}
+  description={c.description}
+  translations={translations}
+>
+  <article class="prose about-body">
+    <Fragment set:html={c.body} />
+  </article>
+</BaseLayout>
+
+<style>
+  .about-body { padding: 48px 24px 64px; }
+  .about-body :global(h2) { margin-top: 1.8em; }
+</style>

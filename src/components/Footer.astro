@@ -1,0 +1,95 @@
+---
+import type { Lang } from '../consts';
+import { SITE } from '../consts';
+import { ROUTES, t } from '../i18n/ui';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const routes = ROUTES[lang];
+const year = new Date().getFullYear();
+---
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">tatakoto</div>
+        <div class="footer-tagline">// {t(lang, 'home.tagline')}</div>
+      </div>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href={routes.about}>{t(lang, 'footer.about')}</a>
+        <a href={routes.method}>{t(lang, 'nav.method')}</a>
+        <a href={`mailto:${SITE.email}`}>{t(lang, 'footer.contact')}</a>
+      </nav>
+    </div>
+
+    <div class="footer-palette" aria-hidden="true">
+      <span style="background:#0F1F3D" title="Abysse"></span>
+      <span style="background:#1F3D6A" title="Océan"></span>
+      <span style="background:#4ECDC4" title="Lagon"></span>
+      <span style="background:#FFE5A0" title="Sable"></span>
+      <span style="background:#FF6B6B" title="Pulse"></span>
+    </div>
+
+    <div class="footer-meta">
+      <span>© {year} {SITE.name}</span>
+      <span class="dot">·</span>
+      <span>{SITE.email}</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 80px;
+    padding: 48px 0 36px;
+    background: var(--abysse);
+    color: var(--sable-soft);
+  }
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 32px;
+  }
+  .footer-brand-name {
+    font-family: var(--font-mono);
+    font-size: 28px;
+    font-weight: 500;
+    letter-spacing: -0.8px;
+  }
+  .footer-tagline {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    opacity: 0.65;
+    margin-top: 4px;
+  }
+  .footer-nav {
+    display: flex;
+    gap: 22px;
+  }
+  .footer-nav a {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--sable-soft);
+    opacity: 0.8;
+    text-decoration: none;
+  }
+  .footer-nav a:hover { color: var(--pulse); opacity: 1; }
+  .footer-palette {
+    display: flex;
+    gap: 0;
+    margin-bottom: 24px;
+  }
+  .footer-palette span {
+    height: 4px;
+    flex: 1;
+  }
+  .footer-meta {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    opacity: 0.5;
+  }
+  .dot { margin: 0 8px; }
+</style>

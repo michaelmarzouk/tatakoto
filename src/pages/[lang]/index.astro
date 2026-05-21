@@ -1,0 +1,132 @@
+---
+import type { GetStaticPaths } from 'astro';
+import type { Lang } from '../../consts';
+import { LANGS } from '../../consts';
+import { ROUTES, t } from '../../i18n/ui';
+import { articles } from '../../data/articles';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+
+export const getStaticPaths = (() => {
+  return LANGS.map((lang) => ({ params: { lang } }));
+}) satisfies GetStaticPaths;
+
+const { lang } = Astro.params as { lang: Lang };
+
+const translations: Partial<Record<Lang, string>> = {
+  fr: '/fr', en: '/en', es: '/es', zh: '/zh',
+};
+
+const sortedArticles = [...articles].sort((a, b) =>
+  new Date(b.date).getTime() - new Date(a.date).getTime()
+);
+---
+
+<BaseLayout
+  lang={lang}
+  title="Tatakoto"
+  description={t(lang, 'home.intro_body')}
+  translations={translations}
+>
+  <section class="hero">
+    <div class="container">
+      <div class="hero-grid">
+        <div class="hero-icon">
+          <svg viewBox="0 0 200 200" width="160" height="160" aria-hidden="true">
+            <circle cx="100" cy="100" r="100" fill="#0F1F3D"/>
+            <g shape-rendering="crispEdges">
+              <line x1="30" y1="120" x2="170" y2="120" stroke="#1F3D6A" stroke-width="1" opacity="0.55"/>
+              <line x1="50" y1="100" x2="150" y2="100" stroke="#1F3D6A" stroke-width="1" opacity="0.3"/>
+              <line x1="50" y1="140" x2="150" y2="140" stroke="#1F3D6A" stroke-width="1" opacity="0.3"/>
+            </g>
+            <polyline points="20,120 80,120 90,125 95,100 100,65 105,100 110,120 115,145 120,160 125,120 180,120" fill="none" stroke="#FF6B6B" stroke-width="3.5" shape-rendering="crispEdges" stroke-linecap="square" stroke-linejoin="miter"/>
+            <g shape-rendering="crispEdges" fill="#4ECDC4">
+              <rect x="99" y="28" width="3" height="3"/>
+              <rect x="96" y="31" width="9" height="3"/>
+              <rect x="93" y="34" width="15" height="3"/>
+              <rect x="90" y="37" width="21" height="3"/>
+              <rect x="93" y="40" width="15" height="3"/>
+              <rect x="96" y="43" width="9" height="3"/>
+              <rect x="99" y="46" width="3" height="3"/>
+              <rect x="140" y="18" width="2" height="2"/>
+              <rect x="138" y="20" width="6" height="2"/>
+              <rect x="140" y="22" width="2" height="2"/>
+              <rect x="62" y="48" width="2" height="2"/>
+              <rect x="60" y="50" width="6" height="2"/>
+              <rect x="62" y="52" width="2" height="2"/>
+            </g>
+          </svg>
+        </div>
+        <div class="hero-text">
+          <h1 class="hero-title">{t(lang, 'home.intro_title')}</h1>
+          <p class="hero-intro">{t(lang, 'home.intro_body')}</p>
+          <div class="hero-tagline">// {t(lang, 'home.tagline')}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="latest">
+    <div class="container">
+      <div class="latest-head">
+        <div class="label-meta">{t(lang, 'home.latest')}</div>
+      </div>
+      <div class="latest-grid">
+        {sortedArticles.map((article) => (
+          <ArticleCard
+            lang={lang}
+            href={`${ROUTES[lang].decryptages}/${article.slug}`}
+            title={article.content[lang].title}
+            description={article.content[lang].description}
+            date={article.date}
+            author={article.author.name}
+            readTime={article.readTime}
+            tags={article.tags}
+          />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding: 72px 0 56px;
+    background: linear-gradient(180deg, var(--sable-soft) 0%, white 100%);
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .hero-icon { display: flex; align-items: center; justify-content: center; }
+  .hero-title {
+    font-size: 2.6rem;
+    letter-spacing: -1.5px;
+    margin: 0 0 18px;
+  }
+  .hero-intro {
+    font-size: 1.15rem;
+    color: var(--text);
+    max-width: 60ch;
+  }
+  .hero-tagline {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--text-mute);
+    margin-top: 16px;
+  }
+  .latest { padding: 48px 0 64px; }
+  .latest-head { margin-bottom: 24px; }
+  .latest-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 18px;
+  }
+  @media (max-width: 720px) {
+    .hero-grid { grid-template-columns: 1fr; gap: 24px; }
+    .hero-title { font-size: 2rem; }
+    .hero-icon svg { width: 120px; height: 120px; }
+  }
+</style>

@@ -1,0 +1,107 @@
+---
+import type { Lang } from '../consts';
+import { SITE, LANG_LOCALES, LANGS } from '../consts';
+import { ROUTES, ui } from '../i18n/ui';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+export interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  ogImage?: string;
+  /** Map of language → URL path for hreflang. Provide for each language version. */
+  translations?: Partial<Record<Lang, string>>;
+  /** Optional extra JSON-LD blocks (already stringified) */
+  jsonLd?: string[];
+  noIndex?: boolean;
+}
+
+const { lang, title, description, ogImage = '/og-image.png', translations, jsonLd = [], noIndex = false } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, SITE.url).toString();
+const fullTitle = title === SITE.name ? `${SITE.name} — ${ui[lang]['home.tagline']}` : `${title} · ${SITE.name}`;
+
+// Organization schema (always present)
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: SITE.name,
+  url: SITE.url,
+  logo: `${SITE.url}/favicon/android-512.png`,
+  description: 'Vulgarisation critique de la recherche médicale, augmentée par l\'IA.',
+  sameAs: [],
+  knowsAbout: [
+    'Médecine fondée sur les preuves',
+    'Intelligence artificielle en santé',
+    'Vulgarisation scientifique',
+  ],
+};
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noIndex && <meta name="robots" content="noindex,nofollow" />}
+
+    {/* Favicons */}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon-180.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    {/* Hreflang */}
+    {translations && Object.entries(translations).map(([l, path]) => (
+      <link rel="alternate" hreflang={LANG_LOCALES[l as Lang]} href={new URL(path!, SITE.url).toString()} />
+    ))}
+    {translations && translations.en && (
+      <link rel="alternate" hreflang="x-default" href={new URL(translations.en, SITE.url).toString()} />
+    )}
+
+    {/* Open Graph */}
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={LANG_LOCALES[lang]} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={new URL(ogImage, SITE.url).toString()} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content={SITE.name} />
+
+    {/* Twitter */}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content={SITE.twitter} />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={new URL(ogImage, SITE.url).toString()} />
+
+    {/* Fonts */}
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500&display=swap" />
+
+    {/* JSON-LD Organization */}
+    <script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />
+    {jsonLd.map(block => (
+      <script type="application/ld+json" set:html={block} />
+    ))}
+
+    <meta name="generator" content={Astro.generator} />
+  </head>
+  <body>
+    <Header lang={lang} translations={translations} />
+    <main>
+      <slot />
+    </main>
+    <Footer lang={lang} />
+  </body>
+</html>

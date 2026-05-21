@@ -1,0 +1,121 @@
+---
+import type { Lang } from '../consts';
+import { LANGS, LANG_NAMES } from '../consts';
+import { ROUTES, t } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+  translations?: Partial<Record<Lang, string>>;
+}
+const { lang, translations } = Astro.props;
+const routes = ROUTES[lang];
+---
+<header class="site-header">
+  <div class="container header-inner">
+    <a href={routes.home} class="brand unstyled" aria-label="Tatakoto">
+      <svg viewBox="0 0 200 200" width="40" height="40" aria-hidden="true">
+        <circle cx="100" cy="100" r="100" fill="#0F1F3D"/>
+        <polyline points="20,120 80,120 90,125 95,100 100,65 105,100 110,120 115,145 120,160 125,120 180,120" fill="none" stroke="#FF6B6B" stroke-width="3.5" shape-rendering="crispEdges" stroke-linecap="square" stroke-linejoin="miter"/>
+        <g shape-rendering="crispEdges" fill="#4ECDC4">
+          <rect x="99" y="28" width="3" height="3"/>
+          <rect x="96" y="31" width="9" height="3"/>
+          <rect x="93" y="34" width="15" height="3"/>
+          <rect x="90" y="37" width="21" height="3"/>
+          <rect x="93" y="40" width="15" height="3"/>
+          <rect x="96" y="43" width="9" height="3"/>
+          <rect x="99" y="46" width="3" height="3"/>
+          <rect x="140" y="18" width="2" height="2"/>
+          <rect x="138" y="20" width="6" height="2"/>
+          <rect x="140" y="22" width="2" height="2"/>
+          <rect x="62" y="48" width="2" height="2"/>
+          <rect x="60" y="50" width="6" height="2"/>
+          <rect x="62" y="52" width="2" height="2"/>
+        </g>
+      </svg>
+      <span class="brand-name">tatakoto</span>
+    </a>
+
+    <nav aria-label="Main">
+      <a href={routes.decryptages}>{t(lang, 'nav.decryptages')}</a>
+      <a href={routes.method}>{t(lang, 'nav.method')}</a>
+      <a href={routes.about}>{t(lang, 'nav.about')}</a>
+    </nav>
+
+    <div class="lang-switcher" aria-label="Language">
+      {LANGS.map((l) => {
+        const href = translations?.[l] ?? `/${l}`;
+        const active = l === lang;
+        return (
+          <a href={href} class:list={['lang-link', { active }]} hreflang={l}>
+            {l.toUpperCase()}
+          </a>
+        );
+      })}
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 0.5px solid var(--border);
+    background: var(--sable-soft);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .brand-name {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 20px;
+    letter-spacing: -0.5px;
+    color: var(--text);
+  }
+  nav {
+    display: flex;
+    gap: 22px;
+    margin-left: auto;
+    margin-right: 16px;
+  }
+  nav a {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    text-decoration: none;
+    color: var(--text-soft);
+  }
+  nav a:hover { color: var(--pulse); }
+  .lang-switcher {
+    display: flex;
+    gap: 6px;
+  }
+  .lang-link {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 4px 8px;
+    text-decoration: none;
+    color: var(--text-mute);
+    border-radius: 4px;
+    transition: background 0.15s;
+  }
+  .lang-link:hover { background: rgba(26, 34, 56, 0.06); }
+  .lang-link.active { background: var(--abysse); color: var(--sable-soft); }
+  @media (max-width: 720px) {
+    nav { gap: 16px; }
+    nav a { font-size: 12px; }
+    .brand-name { display: none; }
+  }
+</style>

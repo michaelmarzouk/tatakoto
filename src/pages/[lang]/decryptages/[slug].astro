@@ -1,0 +1,21 @@
+---
+import type { GetStaticPaths } from 'astro';
+import type { Lang } from '../../../consts';
+import { LANGS } from '../../../consts';
+import { articles } from '../../../data/articles';
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
+
+export const getStaticPaths = (() => {
+  const paths = [];
+  for (const lang of LANGS) {
+    for (const article of articles) {
+      paths.push({ params: { lang, slug: article.slug }, props: { article } });
+    }
+  }
+  return paths;
+}) satisfies GetStaticPaths;
+
+const { lang } = Astro.params as { lang: Lang };
+const { article } = Astro.props;
+---
+<ArticleLayout lang={lang} article={article} />
