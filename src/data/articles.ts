@@ -8,7 +8,7 @@ export interface ArticleContent {
 
 export interface Article {
   slug: string;
-  date: string; // ISO
+  date: string;
   updated: string;
   author: { name: string; role: string; orcid?: string };
   tags: ('ai' | 'medical')[];
@@ -24,157 +24,183 @@ export interface Article {
 
 export const articles: Article[] = [
   {
-    slug: 'semaglutide-essai-select',
+    slug: 'gigapath-foundation-model-pathologie',
     date: '2026-05-21',
     updated: '2026-05-21',
     author: {
       name: 'Dr. Camille Roux',
-      role: 'Médecin rédactrice',
+      role: 'Médecin rédactrice — IA et imagerie médicale',
       orcid: 'https://orcid.org/0000-0000-0000-0000',
     },
-    tags: ['medical', 'ai'],
-    readTime: 7,
-    originalDoi: '10.1056/NEJMoa2307563',
-    originalUrl: 'https://www.nejm.org/doi/full/10.1056/NEJMoa2307563',
-    originalTitle: 'Semaglutide and Cardiovascular Outcomes in Obesity Without Diabetes',
-    originalJournal: 'New England Journal of Medicine',
-    drugs: [{ name: 'Sémaglutide', sameAs: 'https://www.wikidata.org/wiki/Q21105106' }],
-    conditions: [{ name: 'Obésité', sameAs: 'https://www.wikidata.org/wiki/Q12174' }],
+    tags: ['ai', 'medical'],
+    readTime: 8,
+    originalDoi: '10.1038/s41586-024-07441-w',
+    originalUrl: 'https://www.nature.com/articles/s41586-024-07441-w',
+    originalTitle: 'A whole-slide foundation model for digital pathology from real-world data',
+    originalJournal: 'Nature',
+    conditions: [
+      { name: 'Cancer', sameAs: 'https://www.wikidata.org/wiki/Q12078' },
+    ],
     content: {
       fr: {
-        title: 'Sémaglutide et risque cardiovasculaire : ce que dit vraiment l\'essai SELECT',
-        description: 'Analyse critique de SELECT, l\'essai sur 17 604 patients en surpoids sans diabète qui a montré une réduction du risque cardiovasculaire sous sémaglutide. Ce que l\'étude trouve, ce qu\'elle ne dit pas, et ce qui change.',
+        title: 'GigaPath en pathologie numérique : ce que change un foundation model entraîné sur 1,3 milliard de tuiles',
+        description: 'Décryptage du papier Nature 2024 sur Prov-GigaPath, foundation model transformer pour la pathologie numérique. Architecture, données, performance sur 26 benchmarks de cancer, et ce que cela change vraiment pour le diagnostic.',
         body: `
-<p class="lede"><strong>L'essai SELECT, publié dans le NEJM en novembre 2023, a suivi 17 604 patients en surpoids ou obèses, sans diabète, randomisés entre sémaglutide 2,4 mg par semaine et placebo. Sur 40 mois de suivi médian, le risque d'événement cardiovasculaire majeur a baissé de 20 % en relatif — soit 6,5 % d'événements dans le groupe traité contre 8,0 % dans le groupe placebo. C'est statistiquement net, cliniquement intéressant, mais à lire avec deux ou trois précautions.</strong></p>
+<p class="lede"><strong>Le papier publié dans Nature en mai 2024 par Microsoft Research et Providence Health présente GigaPath, un modèle de fondation pour la pathologie numérique entraîné sur 1,3 milliard de tuiles d'images extraites de 171 189 lames histopathologiques, issues de 30 060 patients couvrant 28 types de cancer. Évalué sur 26 benchmarks publics, il dépasse les modèles antérieurs sur 18 d'entre eux, avec des gains notables sur la classification de sous-types de cancers rares et la prédiction de mutations à partir d'images. C'est un palier méthodologique réel, à lire avec quelques précautions sur la généralisation et la disponibilité du modèle.</strong></p>
 
 <h2>Le contexte</h2>
-<p>Le sémaglutide est un agoniste du récepteur GLP-1, initialement développé pour le diabète de type 2 (commercialisé sous le nom d'Ozempic), puis approuvé pour la perte de poids chez le sujet obèse (sous le nom de Wegovy). Depuis quelques années, des signaux d'effets cardiovasculaires bénéfiques émergeaient — d'abord chez les diabétiques, où les essais STEP et SUSTAIN avaient montré des réductions d'événements. SELECT est le premier grand essai conçu pour répondre à une question précise : <em>le sémaglutide protège-t-il aussi chez les patients en surpoids qui n'ont pas de diabète ?</em></p>
+<p>La pathologie numérique consiste à numériser les lames de microscope pour les analyser informatiquement. Depuis 2017, l'IA en pathologie reposait sur des réseaux convolutionnels (CNN) entraînés pour des tâches spécifiques — détecter le cancer du sein, classer les sous-types de lymphome, etc. Ces modèles fonctionnaient mais demandaient à chaque fois un dataset annoté propre à la tâche, coûteux à constituer.</p>
+<p>L'arrivée des <em>foundation models</em> change cette logique. Ces modèles, pré-entraînés sur d'énormes corpus sans tâche spécifique, apprennent des représentations générales qu'on peut adapter rapidement à n'importe quelle tâche aval avec peu de données annotées. C'est ce qui a transformé le NLP avec BERT puis les LLMs. En pathologie, les premiers <em>vision foundation models</em> à grande échelle sont apparus en 2023-2024 : CTransPath, RudolfV, Prov-GigaPath (le papier décrypté ici) et d'autres.</p>
 
 <h2>La méthode</h2>
-<p>Essai contrôlé randomisé, en double aveugle, contre placebo. 17 604 patients âgés de 45 ans ou plus, IMC ≥ 27 kg/m², avec antécédent cardiovasculaire connu (infarctus, AVC, ou maladie artérielle périphérique). Aucun n'avait de diabète. Suivi médian de 40 mois. Le critère de jugement principal était composite : décès cardiovasculaire, infarctus non fatal, ou AVC non fatal. Préenregistré sur ClinicalTrials.gov (NCT03574597) en 2018, avant le démarrage de l'inclusion.</p>
-<p>Financement : Novo Nordisk, fabricant du sémaglutide. Cinq des auteurs sont employés par le sponsor. Les autres déclarent des liens financiers avec le sponsor (consulting, conférences) — déclarations détaillées dans le supplément.</p>
+<p>L'architecture est en deux étages. <strong>Premier étage</strong>, un <em>vision transformer</em> dérivé de DINOv2 extrait des représentations (embeddings) de chaque tuile carrée de 256×256 pixels d'une lame. Ce transformer a 1,1 milliard de paramètres et est entraîné par apprentissage auto-supervisé (sans étiquettes) sur 1,3 milliard de tuiles. Le sigle <em>transformer</em> désigne une architecture neuronale basée sur le mécanisme d'attention, devenue standard depuis 2017 en NLP et plus récemment en vision.</p>
+<p><strong>Deuxième étage</strong>, un transformer de séquence appelé <em>LongNet</em> agrège les milliers de tuiles d'une lame entière en une représentation globale. LongNet est conçu pour traiter des séquences très longues sans exploser en coût mémoire, ce qui était une limite des transformers classiques face aux lames histopathologiques (qui contiennent typiquement 5 000 à 50 000 tuiles).</p>
+<p>Les données d'entraînement viennent du système hospitalier Providence Health, aux États-Unis. 171 189 lames numérisées, 30 060 patients, 28 types de cancer, période 2017-2023. <strong>Tous américains, tous d'un seul réseau hospitalier.</strong> L'évaluation se fait ensuite sur 26 benchmarks externes publics, couvrant classification de sous-types, détection de mutations génétiques à partir d'images, prédiction de survie.</p>
 
 <h2>Les résultats</h2>
-<p>L'événement cardiovasculaire majeur composite est survenu chez 6,5 % des patients sous sémaglutide contre 8,0 % sous placebo. En relatif : <strong>réduction de 20 % du risque</strong> (HR 0,80 ; IC 95 % 0,72-0,90 ; p < 0,001). En absolu : <strong>1,5 point de pourcentage de différence</strong> sur 40 mois — soit <strong>environ 1 événement évité pour 67 patients traités sur 3 ans</strong> (NNT ≈ 67).</p>
-<p>Les effets secondaires gastrointestinaux (nausées, diarrhées, constipation) ont conduit 16,6 % des patients sous sémaglutide à arrêter le traitement, contre 8,2 % sous placebo. La perte de poids moyenne dans le groupe traité a été de 9,4 %.</p>
+<p>Sur 18 des 26 tâches testées, GigaPath dépasse l'état de l'art précédent (principalement CTransPath, modèle de référence publié fin 2022). Les gains les plus marqués portent sur trois domaines.</p>
+<p><strong>La classification de sous-types de cancers rares</strong>, où les datasets traditionnels manquent d'exemples. Sur certaines tâches de classification de lymphomes ou de sarcomes, GigaPath gagne 3 à 8 points d'AUC (aire sous la courbe ROC, qui mesure la capacité à distinguer un positif d'un négatif — 1 est parfait, 0,5 est le hasard).</p>
+<p><strong>La prédiction de mutations génétiques à partir des images seules</strong> — par exemple détecter une mutation PIK3CA dans le cancer du sein juste en regardant les coupes histologiques, sans séquencer l'ADN. C'est un usage non évident des images, et GigaPath y gagne plusieurs points d'AUC sur des mutations comme TP53, KRAS, PIK3CA.</p>
+<p><strong>La prédiction de survie</strong> pour certains cancers à partir de l'image histologique. Sur le glioblastome et certains sous-types de cancer du sein, GigaPath améliore la stratification des patients en groupes de risque.</p>
 
 <h2>Ce qui est bien</h2>
-<p>Trois éléments forts dans cette étude. La <strong>taille de l'échantillon</strong> est imposante (plus de 17 000 patients), ce qui donne une puissance statistique solide. Le <strong>critère de jugement principal était composite et préenregistré</strong>, ce qui exclut le <em>outcome switching</em>. Et le <strong>suivi de 40 mois en médiane</strong> est long pour ce type d'essai — assez pour détecter les effets cardiovasculaires durables, même si encore court pour repérer certains effets tardifs.</p>
+<p>Trois forces notables.</p>
+<p><strong>L'échelle d'entraînement</strong> est sans précédent. CTransPath en 2022 utilisait 32 000 lames. GigaPath en utilise 171 000. La règle des foundation models — *plus de données, plus de paramètres, mieux ça marche* — semble tenir aussi en pathologie.</p>
+<p><strong>L'architecture LongNet</strong> est un vrai apport technique. Elle permet pour la première fois de traiter une lame entière sans la découper artificiellement, et donc de capturer des relations spatiales entre régions distantes — utile par exemple pour les cancers à composante stromale étendue.</p>
+<p><strong>Le code et les poids du modèle ont été publiés</strong> sur GitHub et Hugging Face, sous licence non-commerciale mais accessible à la recherche académique. C'est mieux que les modèles entièrement propriétaires de certains concurrents, et permet la réplication et l'extension par d'autres équipes.</p>
 
 <h2>Ce qui est moins bien</h2>
-<p>Trois points méritent vigilance. <strong>Le bénéfice absolu reste modeste</strong> : 1,5 point de pourcentage sur 40 mois, soit un NNT autour de 67 — ce qui signifie qu'il faut traiter 67 patients pendant 3 ans pour éviter un événement cardiovasculaire majeur chez un seul d'entre eux. C'est utile, ce n'est pas révolutionnaire.</p>
-<p><strong>Les effets secondaires sont sous-représentés</strong> dans la communication du résultat principal. Plus d'un patient sur six abandonne le traitement à cause d'effets digestifs — c'est une donnée critique pour quiconque envisage la prise au long cours. La balance bénéfice/risque dépend autant de la tolérance que de l'efficacité.</p>
-<p><strong>Le financement par Novo Nordisk et l'implication directe de cinq employés du sponsor</strong> parmi les auteurs ne disqualifient pas le résultat, mais imposent un examen indépendant. Plusieurs effets observés (perte de poids, baisse de tension, baisse de l'HbA1c chez les pré-diabétiques) sont des mécanismes plausibles pour expliquer le bénéfice, mais une étude indépendante de réplication serait précieuse.</p>
+<p>Trois limites sérieuses à garder en tête.</p>
+<p><strong>Les données d'entraînement viennent d'un seul système hospitalier.</strong> Providence Health est un grand réseau (51 hôpitaux), mais tous américains, avec des protocoles de fixation et de coloration probablement homogènes. La pathologie est sensible aux variations de pratiques techniques entre laboratoires — un même cancer ne ressemble pas exactement à lui-même selon le scanner utilisé, le temps de fixation, l'opérateur. Aucune validation prospective sur des populations européennes, asiatiques ou africaines n'est rapportée. La performance reste à prouver hors du contexte américain.</p>
+<p><strong>La licence non-commerciale verrouille l'usage clinique réel.</strong> Aucun hôpital ne peut déployer GigaPath en production diagnostique sans renégocier avec Microsoft. C'est compréhensible commercialement, mais cela signifie que le modèle reste un outil de recherche, pas un outil clinique. Plusieurs concurrents — RudolfV (Aignostics), Virchow (Paige) — sont eux aussi sous licences restrictives ou entièrement propriétaires. Le champ a un problème de bien commun.</p>
+<p><strong>L'évaluation comparative est partielle.</strong> GigaPath est comparé principalement à CTransPath (2022) et à quelques modèles antérieurs. Or 2024 a vu émerger en parallèle plusieurs autres foundation models en pathologie (RudolfV, Virchow, Phikon-v2) qui ne sont pas systématiquement comparés. Sans benchmark indépendant et rigoureux entre ces modèles, l'affirmation « état de l'art » mérite prudence.</p>
+<p>Mention complémentaire : tous les auteurs principaux travaillent chez Microsoft Research ou Providence Health, qui détiennent les droits du modèle. Cinq des sept auteurs corresponding sont employés du sponsor. Cela ne disqualifie pas le résultat, mais une étude de réplication indépendante serait bienvenue.</p>
 
-<h2>Ce qui change</h2>
-<p>Pour un <strong>lecteur curieux</strong> : le sémaglutide n'est pas seulement un médicament de perte de poids — il a maintenant un signal de protection cardiovasculaire chez l'adulte en surpoids avec antécédent cardiovasculaire. C'est un changement de catégorie clinique.</p>
-<p>Pour un <strong>patient concerné</strong> (surpoids, antécédent cardiovasculaire, sans diabète) : la question à poser à son médecin n'est pas <em>« est-ce que je devrais prendre du sémaglutide ? »</em> mais <em>« est-ce que les bénéfices probables dans ma situation dépassent le coût, les effets secondaires et la durée de prise nécessaire ? »</em>. La discussion individuelle reste indispensable, parce que le NNT moyen masque des sous-groupes où le bénéfice est probablement plus net.</p>
-<p>Pour un <strong>professionnel de santé non-cardiologue</strong> : les recommandations européennes et américaines vont probablement intégrer ce résultat dans les 12-18 mois, sous réserve d'analyses indépendantes et de discussions sur le coût. À monitorer dans les guidelines ESC et AHA.</p>
+<h2>Ce que ça change</h2>
+<p>Pour la <strong>communauté de recherche</strong>, c'est une nouvelle baseline. GigaPath rejoint quelques autres modèles disponibles qu'on peut fine-tuner sur n'importe quelle tâche pathologie avec peu de données annotées. Le coût d'expérimentation baisse, l'innovation s'accélère.</p>
+<p>Pour les <strong>cliniciens pathologistes</strong>, rien ne change immédiatement. Aucun déploiement en routine n'est imminent — il faudrait validation prospective multi-centres, certification réglementaire (FDA SaMD, CE), intégration dans les workflows existants des systèmes de gestion de lames numériques. Horizon réaliste : 3 à 7 ans pour un usage clinique généralisé, avec d'abord des indications limitées (sous-typage de tumeurs rares, où l'IA est plus rapide que la consultation d'experts).</p>
+<p>Pour les <strong>patients et le grand public</strong>, le changement est à venir mais réel. La pathologie est la discipline médicale la plus susceptible d'être profondément transformée par l'IA dans les dix prochaines années, parce qu'elle repose entièrement sur l'analyse visuelle de patterns — exactement ce que ces modèles font. Ce qui se prépare en silence dans les papiers comme GigaPath finira par changer la rapidité, la cohérence et probablement la précision des diagnostics oncologiques.</p>
 
 <h2>Pour aller plus loin</h2>
-<p>La publication originale est en accès libre via le NEJM (voir le lien dans la barre latérale). À lire en complément : la méta-analyse Cochrane 2024 sur les agonistes GLP-1 en prévention cardiovasculaire, et le rapport de la HAS française sur les indications du sémaglutide en France (disponible sur has-sante.fr).</p>
+<p>Le code et les poids de Prov-GigaPath sont disponibles sur <a href="https://github.com/prov-gigapath/prov-gigapath">GitHub</a> et <a href="https://huggingface.co/prov-gigapath/prov-gigapath">Hugging Face</a> sous licence non-commerciale. Pour le panorama des autres foundation models en pathologie, voir la revue de 2024 de Zhang et al. dans <em>npj Digital Medicine</em>. Pour le débat sur la régulation FDA des modèles de fondation en imagerie, le rapport 2024 de la FDA sur les "AI/ML-Enabled Medical Devices" est en accès libre.</p>
 `,
       },
       en: {
-        title: 'Semaglutide and cardiovascular risk: what the SELECT trial actually shows',
-        description: 'Critical analysis of SELECT, the 17,604-patient trial of overweight non-diabetic patients showing semaglutide reduces cardiovascular risk. What the study finds, what it doesn\'t say, and what changes.',
+        title: 'GigaPath in digital pathology: what changes when a foundation model is trained on 1.3 billion tiles',
+        description: 'Critical analysis of the Nature 2024 paper on Prov-GigaPath, a transformer foundation model for digital pathology. Architecture, data, performance on 26 cancer benchmarks, and what it really changes for diagnosis.',
         body: `
-<p class="lede"><strong>The SELECT trial, published in the NEJM in November 2023, followed 17,604 overweight or obese patients without diabetes, randomized to weekly semaglutide 2.4 mg or placebo. Over a 40-month median follow-up, the risk of major cardiovascular event dropped 20% in relative terms — that is, 6.5% of events in the treated group versus 8.0% in placebo. Statistically clear, clinically interesting, but to be read with a few caveats.</strong></p>
+<p class="lede"><strong>The Nature paper published in May 2024 by Microsoft Research and Providence Health presents GigaPath, a foundation model for digital pathology trained on 1.3 billion image tiles extracted from 171,189 whole-slide images, covering 30,060 patients and 28 cancer types. Evaluated on 26 public benchmarks, it outperforms previous models on 18 of them, with notable gains on rare cancer subtype classification and image-based mutation prediction. A real methodological milestone, to read with caution on generalization and model availability.</strong></p>
 
 <h2>The context</h2>
-<p>Semaglutide is a GLP-1 receptor agonist, initially developed for type 2 diabetes (marketed as Ozempic), then approved for weight loss in obese adults (as Wegovy). Over recent years, signals of cardiovascular benefit had emerged — first in diabetics, where the STEP and SUSTAIN trials showed event reductions. SELECT is the first large trial designed to answer a precise question: <em>does semaglutide also protect overweight patients who don't have diabetes?</em></p>
+<p>Digital pathology consists of digitizing microscope slides for computational analysis. Since 2017, AI in pathology has relied on convolutional networks (CNNs) trained for specific tasks — breast cancer detection, lymphoma subtyping, etc. These models worked but each required a dedicated annotated dataset, costly to assemble.</p>
+<p>The arrival of <em>foundation models</em> changes this. These models, pre-trained on huge corpora without a specific task, learn general representations that can be adapted quickly to any downstream task with little labeled data. That is what transformed NLP with BERT and then LLMs. In pathology, the first large-scale <em>vision foundation models</em> appeared in 2023-2024: CTransPath, RudolfV, Prov-GigaPath (the paper decoded here), among others.</p>
 
 <h2>The method</h2>
-<p>Randomized, double-blind, placebo-controlled trial. 17,604 patients aged 45 or older, BMI ≥ 27 kg/m², with established cardiovascular disease (prior MI, stroke, or peripheral artery disease). None had diabetes. Median follow-up of 40 months. The primary outcome was composite: cardiovascular death, non-fatal MI, or non-fatal stroke. Pre-registered on ClinicalTrials.gov (NCT03574597) in 2018, before enrollment started.</p>
-<p>Funding: Novo Nordisk, the maker of semaglutide. Five of the authors are employed by the sponsor. Other authors declare financial ties to the sponsor (consulting, lectures) — detailed disclosures in the supplement.</p>
+<p>The architecture has two stages. <strong>First stage</strong>: a <em>vision transformer</em> derived from DINOv2 extracts representations (embeddings) from each 256×256 pixel tile of a slide. This transformer has 1.1 billion parameters and is trained by self-supervised learning (without labels) on 1.3 billion tiles. The term <em>transformer</em> refers to a neural architecture based on the attention mechanism, standard since 2017 in NLP and more recently in vision.</p>
+<p><strong>Second stage</strong>: a sequence transformer called <em>LongNet</em> aggregates the thousands of tiles of an entire slide into a global representation. LongNet is designed to process very long sequences without exploding memory cost — a limitation of classical transformers facing pathology slides (which typically contain 5,000 to 50,000 tiles).</p>
+<p>Training data come from the Providence Health hospital system in the United States. 171,189 digitized slides, 30,060 patients, 28 cancer types, 2017-2023 period. <strong>All American, all from a single hospital network.</strong> Evaluation is then done on 26 public external benchmarks, covering subtype classification, image-based mutation detection, and survival prediction.</p>
 
 <h2>The results</h2>
-<p>The major cardiovascular composite event occurred in 6.5% of semaglutide patients versus 8.0% on placebo. In relative terms: <strong>20% relative risk reduction</strong> (HR 0.80; 95% CI 0.72–0.90; p < 0.001). In absolute terms: <strong>1.5 percentage point difference</strong> over 40 months — that is, <strong>roughly 1 event prevented per 67 patients treated for 3 years</strong> (NNT ≈ 67).</p>
-<p>Gastrointestinal side effects (nausea, diarrhea, constipation) led 16.6% of semaglutide patients to discontinue treatment, versus 8.2% on placebo. Mean weight loss in the treated group was 9.4%.</p>
+<p>On 18 of 26 tasks tested, GigaPath outperforms the previous state of the art (mainly CTransPath, the reference model published in late 2022). The biggest gains concern three areas.</p>
+<p><strong>Rare cancer subtype classification</strong>, where traditional datasets lack examples. On certain lymphoma or sarcoma classification tasks, GigaPath gains 3 to 8 points of AUC (area under the ROC curve, which measures the ability to distinguish a positive from a negative — 1 is perfect, 0.5 is chance).</p>
+<p><strong>Genetic mutation prediction from images alone</strong> — for example detecting a PIK3CA mutation in breast cancer just by looking at histology, without sequencing DNA. This is a non-obvious use of images, and GigaPath gains several points of AUC on mutations such as TP53, KRAS, PIK3CA.</p>
+<p><strong>Survival prediction</strong> for certain cancers from the histology image. On glioblastoma and certain breast cancer subtypes, GigaPath improves patient stratification into risk groups.</p>
 
 <h2>What's good</h2>
-<p>Three strong points. The <strong>sample size</strong> is large (over 17,000 patients), giving solid statistical power. The <strong>primary outcome was composite and pre-registered</strong>, which rules out outcome switching. And the <strong>40-month median follow-up</strong> is long for this kind of trial — long enough to detect durable cardiovascular effects, though still short for picking up some late effects.</p>
+<p>Three notable strengths.</p>
+<p><strong>The training scale</strong> is unprecedented. CTransPath in 2022 used 32,000 slides. GigaPath uses 171,000. The foundation model rule — *more data, more parameters, better performance* — seems to hold in pathology too.</p>
+<p><strong>The LongNet architecture</strong> is a genuine technical contribution. For the first time, it allows processing an entire slide without artificial cropping, capturing spatial relationships between distant regions — useful for example for cancers with extended stromal components.</p>
+<p><strong>Code and model weights have been released</strong> on GitHub and Hugging Face, under a non-commercial license accessible to academic research. Better than the fully proprietary models of some competitors, allowing replication and extension by other teams.</p>
 
 <h2>What's less good</h2>
-<p>Three points warrant caution. <strong>The absolute benefit remains modest</strong>: 1.5 percentage points over 40 months, that is an NNT around 67 — meaning 67 patients must be treated for 3 years to prevent one cardiovascular event in one of them. Useful, not revolutionary.</p>
-<p><strong>Side effects are underrepresented</strong> in coverage of the main result. More than one patient in six discontinues treatment because of digestive effects — a critical data point for anyone considering long-term use. The risk-benefit balance depends as much on tolerance as on efficacy.</p>
-<p><strong>Sponsorship by Novo Nordisk and direct involvement of five sponsor employees</strong> among the authors does not disqualify the result, but does call for independent scrutiny. Several observed effects (weight loss, blood pressure drop, HbA1c reduction in pre-diabetics) are plausible mechanisms for the benefit, but an independent replication study would be valuable.</p>
+<p>Three serious limitations to keep in mind.</p>
+<p><strong>Training data come from a single hospital system.</strong> Providence Health is a large network (51 hospitals), but all American, with probably homogeneous fixation and staining protocols. Pathology is sensitive to technical variation between labs — the same cancer doesn't look exactly the same depending on scanner, fixation time, operator. No prospective validation on European, Asian, or African populations is reported. Performance outside the American context remains to be proven.</p>
+<p><strong>The non-commercial license locks real clinical use.</strong> No hospital can deploy GigaPath in production diagnosis without renegotiating with Microsoft. Commercially understandable, but it means the model remains a research tool, not a clinical tool. Several competitors — RudolfV (Aignostics), Virchow (Paige) — are also under restrictive or fully proprietary licenses. The field has a commons problem.</p>
+<p><strong>The comparative evaluation is partial.</strong> GigaPath is compared primarily to CTransPath (2022) and a few earlier models. But 2024 saw the parallel emergence of several other pathology foundation models (RudolfV, Virchow, Phikon-v2) not systematically compared. Without independent rigorous benchmarking between these models, the "state of the art" claim warrants caution.</p>
+<p>Additional note: all lead authors work for Microsoft Research or Providence Health, which hold the model rights. Five of the seven corresponding authors are employees of the sponsor. This does not disqualify the result, but an independent replication study would be welcome.</p>
 
 <h2>What changes</h2>
-<p>For a <strong>curious reader</strong>: semaglutide is no longer just a weight-loss drug — it now has a cardiovascular protection signal in overweight adults with established cardiovascular disease. That's a clinical category shift.</p>
-<p>For a <strong>concerned patient</strong> (overweight, cardiovascular history, non-diabetic): the question to ask your doctor is not <em>"should I take semaglutide?"</em> but <em>"do the likely benefits in my situation outweigh the cost, side effects, and required duration?"</em>. Individual discussion remains essential, because the average NNT hides subgroups where the benefit is probably more pronounced.</p>
-<p>For a <strong>non-cardiologist health professional</strong>: European and American guidelines will likely integrate this result within 12-18 months, pending independent analyses and discussions on cost. Watch the ESC and AHA guideline updates.</p>
+<p>For the <strong>research community</strong>, this is a new baseline. GigaPath joins a few other available models that can be fine-tuned on any pathology task with little annotated data. Experimentation cost drops, innovation accelerates.</p>
+<p>For <strong>clinical pathologists</strong>, nothing changes immediately. No routine deployment is imminent — it would require multi-center prospective validation, regulatory certification (FDA SaMD, CE), integration into existing digital slide management workflows. Realistic horizon: 3 to 7 years for widespread clinical use, starting with limited indications (rare tumor subtyping, where AI is faster than expert consultation).</p>
+<p>For <strong>patients and the general public</strong>, the change is coming but real. Pathology is the medical discipline most likely to be profoundly transformed by AI in the next ten years, because it relies entirely on visual pattern analysis — exactly what these models do. What is being prepared silently in papers like GigaPath will eventually change the speed, consistency, and probably the accuracy of oncology diagnoses.</p>
 
 <h2>Further reading</h2>
-<p>The original publication is open access via NEJM (see sidebar link). Also useful: the Cochrane 2024 meta-analysis on GLP-1 agonists in cardiovascular prevention, and the French HAS report on semaglutide indications in France (at has-sante.fr).</p>
+<p>Prov-GigaPath code and weights are available on <a href="https://github.com/prov-gigapath/prov-gigapath">GitHub</a> and <a href="https://huggingface.co/prov-gigapath/prov-gigapath">Hugging Face</a> under non-commercial license. For an overview of other pathology foundation models, see the 2024 review by Zhang et al. in <em>npj Digital Medicine</em>. For the debate on FDA regulation of foundation models in imaging, the FDA's 2024 report on "AI/ML-Enabled Medical Devices" is openly available.</p>
 `,
       },
       es: {
-        title: 'Semaglutida y riesgo cardiovascular: lo que realmente muestra el ensayo SELECT',
-        description: 'Análisis crítico de SELECT, el ensayo en 17.604 pacientes con sobrepeso sin diabetes que mostró que la semaglutida reduce el riesgo cardiovascular. Lo que el estudio encuentra, lo que no dice, y lo que cambia.',
+        title: 'GigaPath en patología digital: lo que cambia un foundation model entrenado en 1.300 millones de teselas',
+        description: 'Análisis crítico del artículo de Nature 2024 sobre Prov-GigaPath, foundation model transformer para patología digital. Arquitectura, datos, rendimiento en 26 benchmarks de cáncer, y lo que realmente cambia para el diagnóstico.',
         body: `
-<p class="lede"><strong>El ensayo SELECT, publicado en NEJM en noviembre de 2023, siguió a 17.604 pacientes con sobrepeso u obesidad sin diabetes, asignados al azar a semaglutida 2,4 mg semanal o placebo. Tras un seguimiento mediano de 40 meses, el riesgo de evento cardiovascular mayor disminuyó un 20% en términos relativos: 6,5% de eventos en el grupo tratado frente a 8,0% en placebo. Estadísticamente claro, clínicamente interesante, pero leer con algunas precauciones.</strong></p>
+<p class="lede"><strong>El artículo publicado en Nature en mayo de 2024 por Microsoft Research y Providence Health presenta GigaPath, un foundation model para patología digital entrenado en 1.300 millones de teselas de imagen extraídas de 171.189 láminas histopatológicas, que cubren 30.060 pacientes y 28 tipos de cáncer. Evaluado en 26 benchmarks públicos, supera a los modelos anteriores en 18 de ellos, con avances notables en clasificación de subtipos de cánceres raros y predicción de mutaciones a partir de imágenes. Un avance metodológico real, a leer con precaución sobre la generalización y la disponibilidad del modelo.</strong></p>
 
 <h2>El contexto</h2>
-<p>La semaglutida es un agonista del receptor GLP-1, desarrollado inicialmente para la diabetes tipo 2 (comercializado como Ozempic), luego aprobado para la pérdida de peso en adultos obesos (como Wegovy). En los últimos años, señales de beneficio cardiovascular habían emergido — primero en diabéticos, donde los ensayos STEP y SUSTAIN mostraron reducciones de eventos. SELECT es el primer gran ensayo diseñado para responder a una pregunta precisa: <em>¿protege también la semaglutida a pacientes con sobrepeso sin diabetes?</em></p>
+<p>La patología digital consiste en digitalizar las láminas de microscopio para analizarlas computacionalmente. Desde 2017, la IA en patología se basaba en redes convolucionales (CNN) entrenadas para tareas específicas — detección de cáncer de mama, clasificación de linfomas, etc. Estos modelos funcionaban pero cada uno requería un dataset anotado dedicado, costoso de construir.</p>
+<p>La llegada de los <em>foundation models</em> cambia esta lógica. Preentrenados sobre enormes corpus sin tarea específica, aprenden representaciones generales que se adaptan rápidamente a cualquier tarea posterior con pocos datos etiquetados. Esto transformó el NLP con BERT y los LLMs. En patología, los primeros <em>vision foundation models</em> a gran escala aparecieron en 2023-2024.</p>
 
 <h2>El método</h2>
-<p>Ensayo controlado aleatorizado, doble ciego, contra placebo. 17.604 pacientes de 45 años o más, IMC ≥ 27 kg/m², con enfermedad cardiovascular establecida (infarto previo, ictus, o enfermedad arterial periférica). Ninguno tenía diabetes. Seguimiento mediano de 40 meses. El criterio principal era compuesto: muerte cardiovascular, infarto no fatal, o ictus no fatal. Preregistrado en ClinicalTrials.gov (NCT03574597) en 2018, antes del inicio del reclutamiento.</p>
-<p>Financiación: Novo Nordisk, fabricante de la semaglutida. Cinco de los autores son empleados del patrocinador. Los demás declaran vínculos financieros con el patrocinador — detalles en el material suplementario.</p>
+<p>La arquitectura tiene dos etapas. <strong>Primera etapa</strong>: un <em>vision transformer</em> derivado de DINOv2 extrae representaciones de cada tesela de 256×256 píxeles de una lámina. Este transformer tiene 1.100 millones de parámetros y se entrena por aprendizaje autosupervisado en 1.300 millones de teselas.</p>
+<p><strong>Segunda etapa</strong>: un transformer de secuencia llamado <em>LongNet</em> agrega las miles de teselas de una lámina completa en una representación global. LongNet está diseñado para procesar secuencias muy largas sin explotar en coste de memoria.</p>
+<p>Los datos provienen del sistema hospitalario Providence Health, en Estados Unidos. 171.189 láminas, 30.060 pacientes, 28 tipos de cáncer. <strong>Todos americanos, todos de una sola red hospitalaria.</strong> Evaluación en 26 benchmarks externos públicos.</p>
 
 <h2>Los resultados</h2>
-<p>El evento cardiovascular mayor compuesto ocurrió en 6,5% de los pacientes con semaglutida frente a 8,0% con placebo. En términos relativos: <strong>reducción del 20% del riesgo</strong> (HR 0,80; IC 95% 0,72–0,90; p < 0,001). En términos absolutos: <strong>1,5 puntos porcentuales de diferencia</strong> sobre 40 meses — es decir, <strong>aproximadamente 1 evento evitado por cada 67 pacientes tratados durante 3 años</strong> (NNT ≈ 67).</p>
-<p>Los efectos gastrointestinales (náuseas, diarrea, estreñimiento) llevaron al 16,6% de los pacientes con semaglutida a abandonar el tratamiento, frente al 8,2% con placebo. La pérdida de peso media en el grupo tratado fue del 9,4%.</p>
+<p>En 18 de 26 tareas, GigaPath supera el estado del arte previo (principalmente CTransPath, modelo de referencia publicado a finales de 2022). Los avances más marcados se observan en tres áreas: clasificación de subtipos de cánceres raros, predicción de mutaciones genéticas a partir de imágenes (PIK3CA, TP53, KRAS), y predicción de supervivencia.</p>
+<p>Por ejemplo, detectar una mutación PIK3CA en cáncer de mama solo observando la histología, sin secuenciar el ADN. GigaPath gana varios puntos de AUC (área bajo la curva ROC — 1 es perfecto, 0,5 es azar) sobre estas mutaciones.</p>
 
 <h2>Lo bueno</h2>
-<p>Tres puntos fuertes. El <strong>tamaño de la muestra</strong> es grande (más de 17.000 pacientes), lo que da potencia estadística sólida. El <strong>criterio principal era compuesto y preregistrado</strong>, lo que excluye el <em>outcome switching</em>. Y el <strong>seguimiento mediano de 40 meses</strong> es largo para este tipo de ensayo — suficiente para detectar efectos cardiovasculares duraderos, aunque corto para detectar algunos efectos tardíos.</p>
+<p>Tres puntos fuertes. La <strong>escala de entrenamiento</strong> es sin precedentes: 171.000 láminas frente a 32.000 de CTransPath en 2022. La <strong>arquitectura LongNet</strong> permite por primera vez procesar una lámina entera capturando relaciones espaciales entre regiones distantes. <strong>El código y los pesos están publicados</strong> en GitHub y Hugging Face bajo licencia no comercial — accesible para investigación académica.</p>
 
 <h2>Lo menos bueno</h2>
-<p>Tres puntos requieren atención. <strong>El beneficio absoluto sigue siendo modesto</strong>: 1,5 puntos porcentuales sobre 40 meses, es decir un NNT alrededor de 67. Útil, no revolucionario.</p>
-<p><strong>Los efectos secundarios están subrepresentados</strong> en la comunicación del resultado principal. Más de uno de cada seis pacientes abandona el tratamiento por efectos digestivos — un dato crítico para cualquiera que considere el uso prolongado.</p>
-<p><strong>La financiación de Novo Nordisk y la implicación directa de cinco empleados del patrocinador</strong> entre los autores no descalifica el resultado, pero exige un examen independiente.</p>
+<p>Tres limitaciones serias. <strong>Los datos provienen de un solo sistema hospitalario</strong> americano — la patología es sensible a variaciones técnicas entre laboratorios y no hay validación prospectiva en poblaciones europeas, asiáticas o africanas. <strong>La licencia no comercial bloquea el uso clínico real</strong> — ningún hospital puede desplegar GigaPath en diagnóstico de producción sin renegociar con Microsoft. <strong>La evaluación comparativa es parcial</strong> — GigaPath se compara principalmente con CTransPath de 2022, no sistemáticamente con otros foundation models de 2024 (RudolfV, Virchow, Phikon-v2).</p>
+<p>Nota adicional: todos los autores principales trabajan para Microsoft Research o Providence Health. Un estudio de replicación independiente sería bienvenido.</p>
 
 <h2>Lo que cambia</h2>
-<p>Para un <strong>lector curioso</strong>: la semaglutida ya no es solo un fármaco para perder peso — ahora tiene una señal de protección cardiovascular en adultos con sobrepeso y antecedentes cardiovasculares.</p>
-<p>Para un <strong>paciente concernido</strong>: la pregunta que hacerle a tu médico no es <em>"¿debería tomar semaglutida?"</em> sino <em>"¿los beneficios probables en mi situación superan el coste, los efectos secundarios y la duración necesaria?"</em>.</p>
-<p>Para un <strong>profesional de salud no cardiólogo</strong>: las guías europeas y americanas probablemente integrarán este resultado en 12-18 meses, pendiente de análisis independientes y discusiones sobre el coste.</p>
+<p>Para la <strong>comunidad de investigación</strong>, es una nueva línea de base. Para los <strong>patólogos clínicos</strong>, nada cambia inmediatamente — se requiere validación prospectiva multicéntrica, certificación regulatoria, integración en flujos de trabajo. Horizonte realista: 3 a 7 años. Para los <strong>pacientes y el público</strong>, el cambio viene pero es real. La patología es la disciplina médica con mayor probabilidad de ser profundamente transformada por la IA en los próximos diez años.</p>
 
 <h2>Para profundizar</h2>
-<p>La publicación original está en acceso abierto vía NEJM. También útil: el meta-análisis Cochrane 2024 sobre agonistas GLP-1 en prevención cardiovascular, y el informe de la HAS francesa sobre indicaciones de la semaglutida.</p>
+<p>Código y pesos de Prov-GigaPath disponibles en <a href="https://github.com/prov-gigapath/prov-gigapath">GitHub</a> y <a href="https://huggingface.co/prov-gigapath/prov-gigapath">Hugging Face</a> bajo licencia no comercial. Para el panorama de otros foundation models en patología, ver la revisión de 2024 de Zhang et al. en <em>npj Digital Medicine</em>.</p>
 `,
       },
       zh: {
-        title: '司美格鲁肽与心血管风险：SELECT试验究竟显示了什么',
-        description: '对SELECT试验的批判性分析。该试验涵盖17604名超重无糖尿病患者，显示司美格鲁肽可降低心血管风险。研究发现了什么、没有说什么、以及会改变什么。',
+        title: 'GigaPath在数字病理学中：一个在13亿图像块上训练的基础模型带来什么改变',
+        description: '对2024年Nature论文Prov-GigaPath的深度解读：用于数字病理的Transformer基础模型。架构、数据、在26个癌症基准测试中的表现，以及对诊断的实际影响。',
         body: `
-<p class="lede"><strong>SELECT试验于2023年11月发表于《新英格兰医学杂志》，追踪了17,604名超重或肥胖但无糖尿病的患者，随机分配至每周一次2.4毫克司美格鲁肽组或安慰剂组。中位40个月的随访中，主要心血管事件的相对风险降低了20%——即治疗组事件发生率为6.5%，安慰剂组为8.0%。统计学上明确，临床上有意义，但需谨慎解读。</strong></p>
+<p class="lede"><strong>2024年5月发表于Nature的论文由Microsoft Research和Providence Health联合发布，介绍了GigaPath——一个用于数字病理学的基础模型。该模型在13亿个图像块上进行训练，这些图像块来自171,189张全切片病理图像，覆盖30,060名患者和28种癌症类型。在26个公共基准测试中，它在18个上超越了先前的最佳模型，在罕见癌症亚型分类和基于图像的基因突变预测方面表现尤为突出。这是一个真正的方法学里程碑，但在推广性和模型可用性方面需要谨慎解读。</strong></p>
 
 <h2>背景</h2>
-<p>司美格鲁肽是GLP-1受体激动剂，最初开发用于2型糖尿病（商品名Ozempic），后批准用于肥胖成人的减重（商品名Wegovy）。近年来，心血管获益的信号陆续出现——首先在糖尿病患者中，STEP和SUSTAIN试验显示了事件减少。SELECT是首个针对一个具体问题设计的大型试验：<em>司美格鲁肽是否也能保护无糖尿病的超重患者？</em></p>
+<p>数字病理学是将显微镜切片数字化以进行计算分析的领域。自2017年起，病理学中的AI主要依赖卷积神经网络（CNN），针对特定任务进行训练——如乳腺癌检测、淋巴瘤亚型分类等。这些模型有效，但每项任务都需要专门的标注数据集，构建成本高昂。</p>
+<p><em>基础模型</em>（foundation model）的出现改变了这一逻辑。这类模型在庞大语料上进行无特定任务的预训练，学习通用表征，可以用很少的标注数据快速适配任何下游任务。BERT和LLMs改变了NLP领域。在病理学中，首批大规模的<em>视觉基础模型</em>于2023-2024年出现：CTransPath、RudolfV、Prov-GigaPath（本文解读对象）等。</p>
 
 <h2>方法</h2>
-<p>随机、双盲、安慰剂对照试验。17,604名年龄≥45岁、BMI ≥ 27 kg/m²、有既往心血管疾病（心梗、卒中或外周动脉疾病）的患者。均无糖尿病。中位随访40个月。主要终点为复合终点：心血管死亡、非致命性心梗或非致命性卒中。2018年在ClinicalTrials.gov（NCT03574597）预注册，在入组开始前。</p>
-<p>资助方：诺和诺德，司美格鲁肽的生产商。五名作者受雇于赞助商。其他作者声明与赞助商的财务关系——详细披露见补充材料。</p>
+<p>架构分为两个阶段。<strong>第一阶段</strong>：一个源自DINOv2的<em>视觉Transformer</em>从切片中每个256×256像素的图像块提取表征（embedding）。该Transformer有11亿参数，通过自监督学习（无标注）在13亿图像块上训练。<em>Transformer</em>是基于注意力机制的神经架构，自2017年起成为NLP的标准，近年也广泛用于视觉。</p>
+<p><strong>第二阶段</strong>：一个名为<em>LongNet</em>的序列Transformer将整张切片中数千个图像块聚合为全局表征。LongNet专为处理极长序列设计，不会因内存成本而崩溃——这是传统Transformer在面对病理切片（通常包含5,000至50,000个图像块）时的主要限制。</p>
+<p>训练数据来自美国Providence Health医院系统。171,189张数字化切片，30,060名患者，28种癌症类型，时间跨度2017-2023年。<strong>全部为美国人，全部来自单一医院网络。</strong>评估在26个公共外部基准上进行。</p>
 
 <h2>结果</h2>
-<p>主要心血管复合事件在司美格鲁肽组发生率为6.5%，安慰剂组为8.0%。相对风险降低：<strong>20%</strong>（HR 0.80；95% CI 0.72–0.90；p < 0.001）。绝对风险差异：<strong>1.5个百分点</strong>，40个月期间——即<strong>大约每治疗67名患者3年可预防1例事件</strong>（NNT ≈ 67）。</p>
-<p>胃肠道不良反应（恶心、腹泻、便秘）导致16.6%的司美格鲁肽组患者停药，安慰剂组为8.2%。治疗组的平均体重减轻为9.4%。</p>
+<p>在26项测试任务中的18项，GigaPath超越了先前的最佳水平（主要是2022年末发布的参考模型CTransPath）。最显著的进步集中在三个领域。</p>
+<p><strong>罕见癌症亚型分类</strong>，传统数据集在这方面缺乏样本。在某些淋巴瘤或肉瘤分类任务上，GigaPath的AUC（ROC曲线下面积，衡量区分阳性和阴性的能力——1为完美，0.5为随机）提高了3至8个百分点。</p>
+<p><strong>仅从图像预测基因突变</strong>——例如仅通过观察组织学切片就能检测乳腺癌中的PIK3CA突变，而无需DNA测序。GigaPath在TP53、KRAS、PIK3CA等突变上获得多个AUC百分点的提升。</p>
+<p><strong>生存预测</strong>，针对某些癌症。在胶质母细胞瘤和某些乳腺癌亚型上，GigaPath改善了风险组分层。</p>
 
 <h2>优点</h2>
-<p>三个优势。<strong>样本量大</strong>（超过17,000名患者），统计学功效强。<strong>主要终点为复合终点且预注册</strong>，排除了终点切换。<strong>中位40个月的随访</strong>对于此类试验来说较长——足以检测持续的心血管效应，但对某些晚期效应可能仍然较短。</p>
+<p>三个显著优势。<strong>训练规模</strong>前所未有：2022年CTransPath使用32,000张切片，GigaPath使用171,000张。基础模型的"数据越多、参数越多、效果越好"的规律在病理学中似乎也成立。</p>
+<p><strong>LongNet架构</strong>是真正的技术贡献。首次允许处理整张切片而无需人为分割，能够捕捉远距离区域之间的空间关系——对具有广泛间质成分的癌症尤为有用。</p>
+<p><strong>代码和模型权重已发布</strong>在GitHub和Hugging Face上，采用非商业许可证但对学术研究开放。这比某些竞争对手的完全私有模型要好，允许其他团队复现和扩展。</p>
 
-<h2>不足之处</h2>
-<p>三点需谨慎。<strong>绝对获益仍然有限</strong>：40个月内1.5个百分点的差异，NNT约67——意味着治疗67名患者3年才能预防1例心血管事件。有用，但不算革命性。</p>
-<p><strong>副作用在主要结果报告中代表性不足</strong>。超过六分之一的患者因消化道副作用停药——对任何考虑长期使用的人来说，这是关键数据。</p>
-<p><strong>诺和诺德的资助和五名赞助商员工直接参与作者团队</strong>不否定结果，但需要独立审查。</p>
+<h2>不足</h2>
+<p>三个需要关注的严重限制。</p>
+<p><strong>训练数据来自单一医院系统。</strong>Providence Health是一个大型网络（51家医院），但全部位于美国，固定和染色协议可能较为统一。病理学对实验室间的技术变化敏感——同一种癌症在不同扫描仪、不同固定时间、不同操作员下可能看起来不同。论文未报告在欧洲、亚洲或非洲人群中的前瞻性验证。在美国以外的环境中的表现仍有待证明。</p>
+<p><strong>非商业许可证锁住了真正的临床使用。</strong>任何医院都不能在不与Microsoft重新谈判的情况下将GigaPath部署到生产诊断中。从商业上可以理解，但这意味着该模型仍然是研究工具，而非临床工具。</p>
+<p><strong>对比评估并不全面。</strong>GigaPath主要与CTransPath（2022）及少数早期模型进行比较。但2024年也出现了其他几个病理基础模型（RudolfV、Virchow、Phikon-v2），并未系统比较。在缺乏独立严格基准测试的情况下，"最先进"的说法需要谨慎。</p>
+<p>补充说明：所有主要作者都在Microsoft Research或Providence Health工作，这两个机构拥有模型权利。这不会使结果失去价值，但独立的复现研究将是受欢迎的。</p>
 
-<h2>改变了什么</h2>
-<p>对<strong>好奇的读者</strong>：司美格鲁肽不再只是减重药——它现在在有心血管病史的超重成人中具有心血管保护信号。</p>
-<p>对<strong>相关患者</strong>（超重，有心血管病史，无糖尿病）：向医生提出的问题不是<em>"我应该服用司美格鲁肽吗？"</em>而是<em>"在我的具体情况下，可能的获益是否超过费用、副作用和所需治疗时间？"</em>。</p>
-<p>对<strong>非心血管专科医务人员</strong>：欧美指南可能在12-18个月内整合这一结果，待独立分析和费用讨论。</p>
+<h2>带来的改变</h2>
+<p>对<strong>研究界</strong>来说，这是一个新基线。GigaPath加入了少数几个可用模型的行列，研究人员可以用很少的标注数据在任何病理任务上进行微调。实验成本下降，创新加速。</p>
+<p>对<strong>临床病理学家</strong>来说，目前没有变化。常规部署尚未临近——需要多中心前瞻性验证、监管认证（FDA SaMD、CE）、整合到现有数字切片管理工作流。现实时间表：3至7年实现广泛临床应用，首先从有限适应症开始（罕见肿瘤亚型分型，AI比专家会诊更快）。</p>
+<p>对<strong>患者和公众</strong>来说，变化即将到来且真实。病理学是未来十年最有可能被AI深刻变革的医学学科，因为它完全依赖视觉模式分析——这正是这些模型擅长的。GigaPath这样的论文在悄然准备的，最终将改变肿瘤诊断的速度、一致性，并可能提高准确性。</p>
 
 <h2>延伸阅读</h2>
-<p>原始论文通过NEJM开放获取。补充阅读：Cochrane 2024关于GLP-1激动剂在心血管预防中的荟萃分析，以及法国HAS关于司美格鲁肽适应症的报告。</p>
+<p>Prov-GigaPath的代码和权重在<a href="https://github.com/prov-gigapath/prov-gigapath">GitHub</a>和<a href="https://huggingface.co/prov-gigapath/prov-gigapath">Hugging Face</a>上以非商业许可证提供。关于病理学中其他基础模型的概述，参见Zhang等2024年在<em>npj Digital Medicine</em>上的综述。</p>
 `,
       },
     },

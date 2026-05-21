@@ -1,28 +1,32 @@
 # Tatakoto
 
-> Tatakoto vulgarise la recherche médicale en s'appuyant sur l'intelligence artificielle.
-> Chaque article décrypte une publication scientifique récente : contexte, méthode,
-> résultats en chiffres relatifs ET absolus, limites, et implications réelles.
+> Tatakoto vulgarise la recherche scientifique sur l'intelligence artificielle
+> appliquee a la medecine. Detection de cancer par modeles transformer,
+> foundation models en imagerie medicale, LLMs en raisonnement clinique,
+> IA en decouverte de medicaments. Chaque article dit ce que l'etude trouve,
+> ce qu'elle ne dit pas, et ce qui change.
 
 ## Mission
 
-Tatakoto rend la recherche médicale lisible, vérifiable, et utile à un public non
-spécialiste — sans rien sacrifier de la précision. L'IA assiste la sélection,
-la première lecture et la traduction. Un humain nommé relit, vérifie chaque
-chiffre, et signe.
+Tatakoto rend la recherche IA-sante lisible, verifiable et utile a un public
+non specialiste. La methode editoriale est rigoureuse : architecture du
+modele, donnees d'entrainement et biais, comparateur honnete, metriques en
+termes ML ET en traduction clinique, limites de generalisation, accessibilite
+du modele, conflits d'interets. Tatakoto nomme les modes d'echec specifiques
+a l'IA-sante (data leakage, shortcut learning, biais de population).
 
 ## Langues
 
-Articles publiés en français (original), anglais, espagnol, chinois.
+Articles publies en francais (original), anglais, espagnol, chinois.
 
-## Décryptages
+## Decryptages
 
-- [Sémaglutide et l'essai SELECT (fr)](https://tatakoto.io/fr/decryptages/semaglutide-essai-select)
-- [Semaglutide and SELECT trial (en)](https://tatakoto.io/en/decryptages/semaglutide-essai-select)
-- [Semaglutida y ensayo SELECT (es)](https://tatakoto.io/es/decryptages/semaglutide-essai-select)
-- [司美格鲁肽与SELECT试验 (zh)](https://tatakoto.io/zh/decryptages/semaglutide-essai-select)
+- [GigaPath en pathologie numerique (fr)](https://tatakoto.io/fr/decryptages/gigapath-foundation-model-pathologie)
+- [GigaPath in digital pathology (en)](https://tatakoto.io/en/decryptages/gigapath-foundation-model-pathologie)
+- [GigaPath en patologia digital (es)](https://tatakoto.io/es/decryptages/gigapath-foundation-model-pathologie)
+- [GigaPath数字病理 (zh)](https://tatakoto.io/zh/decryptages/gigapath-foundation-model-pathologie)
 
-## À propos
+## A propos
 
-- [À propos (fr)](https://tatakoto.io/fr/about)
+- [A propos (fr)](https://tatakoto.io/fr/about)
 - [About (en)](https://tatakoto.io/en/about)

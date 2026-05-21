@@ -18,62 +18,62 @@ const translations: Partial<Record<Lang, string>> = {
 const content: Record<Lang, { title: string; description: string; body: string }> = {
   fr: {
     title: 'À propos',
-    description: 'Tatakoto vulgarise la recherche médicale en s\'appuyant sur l\'IA, avec la rigueur d\'un humain qui signe.',
+    description: "Tatakoto décrypte la recherche sur l'IA appliquée à la médecine. Méthode, transparence, équipe.",
     body: `
-      <p class="lede"><strong>Tatakoto rend la recherche médicale lisible, vérifiable, et utile à un public non spécialiste — sans rien sacrifier de la précision.</strong></p>
+      <p class="lede"><strong>Tatakoto vulgarise la recherche scientifique sur l'intelligence artificielle appliquée à la médecine. Détection de cancer par transformer, foundation models en imagerie, LLMs cliniques — on lit les papiers, on les explique, on dit ce qui est solide et ce qui ne l'est pas.</strong></p>
       <h2>Le projet</h2>
-      <p>Plus d'un million d'articles biomédicaux paraissent chaque année. Personne, en dehors d'une poignée de spécialistes, ne peut suivre. Tatakoto se place entre la publication brute (illisible) et la couverture grand public (souvent trompeuse). On vise la zone juste — celle où le lecteur comprend vraiment ce qu'une étude dit, ce qu'elle ne dit pas, et apprend à juger par lui-même.</p>
+      <p>La recherche IA × santé est devenue le moteur de la médecine du XXIe siècle. Des milliers de papiers paraissent chaque année — sur la détection de cancer en pathologie numérique, les modèles de fondation en imagerie, les LLMs en raisonnement clinique, l'IA en découverte de médicaments. La quasi-totalité reste illisible pour quiconque n'est ni clinicien ni ingénieur ML. Tatakoto se place entre la publication brute et la couverture grand public, qui titre sur des press releases sans regarder la méthode.</p>
       <h2>La méthode</h2>
-      <p>Chaque décryptage suit une grille rigoureuse : contexte, méthode, résultats en chiffres relatifs ET absolus, limites, et implications réelles. L'IA assiste la sélection, la première lecture et la traduction. Un humain — médecin ou scientifique nommé — relit, vérifie chaque chiffre contre la publication originale, et signe.</p>
+      <p>Chaque Décryptage suit une grille rigoureuse : architecture du modèle, données d'entraînement et leurs biais, comparateur honnête, métriques en termes ML ET en traduction clinique, limites de généralisation, accessibilité du modèle (code, poids, licence), conflits d'intérêts, maturité réglementaire. On nomme les modes d'échec spécifiques à l'IA-santé : data leakage, shortcut learning, biais de population, comparateurs biaisés.</p>
       <h2>Multilingue</h2>
-      <p>Tatakoto publie en français, anglais, espagnol et chinois. L'original est écrit en français ; les traductions sont produites par IA puis relues par un locuteur natif avant publication.</p>
+      <p>Tatakoto publie en français, anglais, espagnol et chinois. L'original est écrit et signé par un humain en français. Les traductions sont assistées par IA puis relues par un locuteur natif avant publication.</p>
       <h2>Engagements</h2>
-      <p>Pas de publi-rédactionnel. Pas de publicité pharmaceutique. Financements publics. Corrections en moins de 48 heures avec mention visible. Transparence sur l'IA à la fin de chaque article.</p>
+      <p>Pas de publi-rédactionnel. Pas de publicité de fabricants de dispositifs IA, pas de partenariat avec des éditeurs de modèles. Financements publics. Corrections en moins de 48 heures avec mention visible. Transparence éditoriale en pied de chaque article.</p>
     `,
   },
   en: {
     title: 'About',
-    description: 'Tatakoto makes medical research readable, with AI assistance and the rigor of a human who signs.',
+    description: 'Tatakoto decodes research on AI applied to medicine. Method, transparency, team.',
     body: `
-      <p class="lede"><strong>Tatakoto makes medical research readable, verifiable, and useful to non-specialists — without sacrificing precision.</strong></p>
+      <p class="lede"><strong>Tatakoto makes scientific research on artificial intelligence applied to medicine readable. Transformers for cancer detection, foundation models in imaging, clinical LLMs — we read the papers, explain them, and say what holds up and what doesn't.</strong></p>
       <h2>The project</h2>
-      <p>More than a million biomedical papers appear every year. No one outside a handful of specialists can keep up. Tatakoto sits between the raw publication (unreadable) and mainstream coverage (often misleading). We aim for the right zone — where the reader truly understands what a study says, what it doesn't say, and learns to judge for themselves.</p>
+      <p>AI × health research has become the engine of 21st century medicine. Thousands of papers appear each year — on cancer detection in digital pathology, foundation models in imaging, LLMs in clinical reasoning, AI in drug discovery. Nearly all of it remains unreadable to anyone who isn't both a clinician and an ML engineer. Tatakoto sits between the raw publication and mainstream coverage that headlines press releases without checking the method.</p>
       <h2>The method</h2>
-      <p>Each decryption follows a rigorous grid: context, method, results in relative AND absolute numbers, limits, real implications. AI assists selection, first reading, and translation. A named human — physician or scientist — reviews, verifies each figure against the original publication, and signs.</p>
+      <p>Each decryption follows a rigorous grid: model architecture, training data and its biases, honest comparator, metrics in ML terms AND clinical translation, generalization limits, model accessibility (code, weights, license), conflicts of interest, regulatory maturity. We name AI-health-specific failure modes: data leakage, shortcut learning, population bias, biased comparators.</p>
       <h2>Multilingual</h2>
-      <p>Tatakoto publishes in French, English, Spanish, and Chinese. The original is written in French; translations are produced by AI then reviewed by a native speaker before publication.</p>
+      <p>Tatakoto publishes in French, English, Spanish, and Chinese. The original is written and signed by a human in French. Translations are AI-assisted then reviewed by a native speaker before publication.</p>
       <h2>Commitments</h2>
-      <p>No native advertising. No pharma ads. Public funding sources. Corrections under 48 hours with visible note. AI transparency at the end of every article.</p>
+      <p>No native advertising. No AI device manufacturer ads, no partnerships with model vendors. Public funding sources. Corrections under 48 hours with visible note. Editorial transparency at the foot of every article.</p>
     `,
   },
   es: {
     title: 'Acerca de',
-    description: 'Tatakoto hace legible la investigación médica con la ayuda de la IA y el rigor de un humano que firma.',
+    description: 'Tatakoto analiza la investigación sobre IA aplicada a la medicina. Método, transparencia, equipo.',
     body: `
-      <p class="lede"><strong>Tatakoto hace que la investigación médica sea legible, verificable y útil para no especialistas, sin sacrificar la precisión.</strong></p>
+      <p class="lede"><strong>Tatakoto hace legible la investigación científica sobre inteligencia artificial aplicada a la medicina. Transformers para detección de cáncer, foundation models en imagen, LLMs clínicos — leemos los artículos, los explicamos, y decimos qué es sólido y qué no.</strong></p>
       <h2>El proyecto</h2>
-      <p>Más de un millón de artículos biomédicos aparecen cada año. Nadie, salvo un puñado de especialistas, puede seguirlos. Tatakoto se ubica entre la publicación bruta (ilegible) y la cobertura general (a menudo engañosa). Buscamos la zona justa — donde el lector entiende realmente lo que dice un estudio, lo que no dice, y aprende a juzgar por sí mismo.</p>
+      <p>La investigación IA × salud se ha convertido en el motor de la medicina del siglo XXI. Miles de artículos aparecen cada año. Casi todos permanecen ilegibles para quien no es a la vez clínico e ingeniero de ML. Tatakoto se sitúa entre la publicación bruta y la cobertura general que titula sobre comunicados de prensa sin revisar el método.</p>
       <h2>El método</h2>
-      <p>Cada análisis sigue una rejilla rigurosa: contexto, método, resultados en cifras relativas Y absolutas, límites, implicaciones reales. La IA asiste la selección, la primera lectura y la traducción. Un humano nombrado — médico o científico — revisa, verifica cada cifra contra la publicación original y firma.</p>
+      <p>Cada análisis sigue una rejilla rigurosa: arquitectura del modelo, datos de entrenamiento y sus sesgos, comparador honesto, métricas en términos ML Y traducción clínica, límites de generalización, accesibilidad del modelo (código, pesos, licencia), conflictos de intereses, madurez regulatoria.</p>
       <h2>Multilingüe</h2>
-      <p>Tatakoto publica en francés, inglés, español y chino. El original se escribe en francés; las traducciones se producen por IA y luego son revisadas por un hablante nativo antes de la publicación.</p>
+      <p>Tatakoto publica en francés, inglés, español y chino. El original es escrito y firmado por un humano en francés. Las traducciones son asistidas por IA y luego revisadas por un hablante nativo antes de la publicación.</p>
       <h2>Compromisos</h2>
-      <p>Sin contenido patrocinado. Sin publicidad farmacéutica. Fuentes de financiación públicas. Correcciones en menos de 48 horas con nota visible. Transparencia sobre la IA al final de cada artículo.</p>
+      <p>Sin contenido patrocinado. Sin publicidad de fabricantes de dispositivos IA, sin asociaciones con proveedores de modelos. Fuentes de financiación públicas. Correcciones en menos de 48 horas. Transparencia editorial al pie de cada artículo.</p>
     `,
   },
   zh: {
     title: '关于',
-    description: 'Tatakoto借助AI让医学研究变得易读，并由签名的人类严格审核。',
+    description: 'Tatakoto解读AI在医学中应用的研究。方法、透明度、团队。',
     body: `
-      <p class="lede"><strong>Tatakoto让医学研究对非专业人士变得易读、可验证、有用——同时不牺牲精确性。</strong></p>
+      <p class="lede"><strong>Tatakoto让人工智能在医学中应用的科学研究变得易读。用于癌症检测的Transformer、影像基础模型、临床大语言模型——我们阅读论文，加以解释，指出哪些站得住脚、哪些不能。</strong></p>
       <h2>项目</h2>
-      <p>每年发表的生物医学论文超过一百万篇。除少数专家外，无人能跟上。Tatakoto处在原始出版物（难以阅读）与大众报道（常有误导）之间，旨在找到合适的位置——读者真正理解研究所说的、所未说的，并学会自己判断。</p>
+      <p>AI × 健康研究已成为21世纪医学的引擎。每年数千篇论文涌现——数字病理癌症检测、影像基础模型、临床推理大语言模型、AI药物发现。几乎所有内容对既非临床医生又非ML工程师的人而言难以阅读。Tatakoto处在原始论文与只看新闻稿不看方法的大众报道之间。</p>
       <h2>方法</h2>
-      <p>每篇解读遵循严格的框架：背景、方法、相对和绝对数字的结果、局限性、实际意义。AI协助选题、初读和翻译。一位署名的人类——医生或科学家——审核、核对每个数字与原始出版物，并签名。</p>
+      <p>每篇解读遵循严格框架：模型架构、训练数据及其偏倚、公正的对照、ML指标和临床转化、泛化局限、模型可访问性（代码、权重、许可证）、利益冲突、监管成熟度。我们指出AI医疗特有的失败模式：数据泄露、捷径学习、人群偏倚、有偏对照。</p>
       <h2>多语言</h2>
-      <p>Tatakoto以法语、英语、西班牙语和中文发布。原稿以法语撰写；翻译由AI生成，发布前由母语者审核。</p>
+      <p>Tatakoto以法语、英语、西班牙语和中文发布。原稿由人类以法语撰写并签名。翻译由AI辅助，发布前由母语者审核。</p>
       <h2>承诺</h2>
-      <p>无原生广告。无医药广告。公开资金来源。48小时内更正并明确标注。每篇文章末尾透明说明AI的使用。</p>
+      <p>无原生广告。无AI设备厂商广告，与模型供应商无合作关系。公开资金来源。48小时内更正。每篇文章末尾有编辑透明度声明。</p>
     `,
   },
 };
