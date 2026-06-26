@@ -1,0 +1,28 @@
+# Force UTF-8 charset on text files
+AddCharset utf-8 .txt
+AddCharset utf-8 .html
+AddCharset utf-8 .xml
+AddCharset utf-8 .webmanifest
+AddDefaultCharset utf-8
+
+# Canonical domain: redirect tatakoto.com (no www) and tatakoto.io to www.tatakoto.com
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^tatakoto\.com$ [OR]
+RewriteCond %{HTTP_HOST} ^(www\.)?tatakoto\.io$
+RewriteRule ^(.*)$ https://www.tatakoto.com/$1 [R=301,L]
+
+# Compression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml application/javascript application/json image/svg+xml
+</IfModule>
+
+# Cache static assets
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/svg+xml "access plus 1 month"
+  ExpiresByType image/png "access plus 1 month"
+  ExpiresByType image/jpeg "access plus 1 month"
+  ExpiresByType text/css "access plus 1 week"
+  ExpiresByType application/javascript "access plus 1 week"
+  ExpiresByType text/html "access plus 1 hour"
+</IfModule>

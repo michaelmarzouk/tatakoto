@@ -18,3 +18,21 @@ npm-debug.log*
 .idea/
 .DS_Store
 *.swp
+
+# temp build config (sandbox)
+_tb.config.ts
+tata.run.config.ts
+tata.override.config.ts
+tata.sandbox.config.ts
+_tata.run.config.ts.aside
+
+# sandbox build artefacts
+.astro_stale*/
+dist_locked*/
+dist_stale*/
+dist2_test/
+.home/
+.npm/
+.npmcache/
+.buildtmp/
+_rtest*

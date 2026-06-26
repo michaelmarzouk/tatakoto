@@ -1,8 +1,9 @@
 export const SITE = {
-  url: 'https://tatakoto.io',
+  url: 'https://www.tatakoto.com',
   name: 'Tatakoto',
   twitter: '@tatakoto',
-  email: 'redaction@tatakoto.io',
+  email: 'redaction@tatakoto.com',
+  gaId: 'G-BP7XHDGN20',
 } as const;
 
 export type Lang = 'fr' | 'en' | 'es' | 'zh';

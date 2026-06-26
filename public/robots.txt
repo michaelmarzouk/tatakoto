@@ -23,4 +23,4 @@ Allow: /
 User-agent: CCBot
 Allow: /
 
-Sitemap: https://tatakoto.io/sitemap-index.xml
+Sitemap: https://www.tatakoto.com/sitemap-index.xml
