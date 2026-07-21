@@ -1,0 +1,91 @@
+import { c as createComponent } from './astro-component_jIzWlOws.mjs';
+import 'piccolore';
+import { r as renderComponent, g as renderTemplate, c as maybeRenderHead, F as Fragment, u as unescapeHTML } from './prerender_B4PWL2FF.mjs';
+import { L as LANGS } from './consts_Bjadhjos.mjs';
+import { $ as $$BaseLayout, R as ROUTES } from './BaseLayout_uLLR0r4g.mjs';
+
+const getStaticPaths = (() => {
+  return LANGS.map((lang) => ({ params: { lang } }));
+});
+const $$About = createComponent(($$result, $$props, $$slots) => {
+  const Astro2 = $$result.createAstro($$props, $$slots);
+  Astro2.self = $$About;
+  const { lang } = Astro2.params;
+  const translations = {
+    fr: ROUTES.fr.about,
+    en: ROUTES.en.about,
+    es: ROUTES.es.about,
+    zh: ROUTES.zh.about
+  };
+  const content = {
+    fr: {
+      title: "À propos",
+      description: "Tatakoto décrypte la recherche sur l'IA appliquée à la médecine. Méthode, transparence, équipe.",
+      body: `
+      <p class="lede"><strong>Tatakoto vulgarise la recherche scientifique sur l'intelligence artificielle appliquée à la médecine. Détection de cancer par transformer, foundation models en imagerie, LLMs cliniques — on lit les papiers, on les explique, on dit ce qui est solide et ce qui ne l'est pas.</strong></p>
+      <h2>Le projet</h2>
+      <p>La recherche IA × santé est devenue le moteur de la médecine du XXIe siècle. Des milliers de papiers paraissent chaque année — sur la détection de cancer en pathologie numérique, les modèles de fondation en imagerie, les LLMs en raisonnement clinique, l'IA en découverte de médicaments. La quasi-totalité reste illisible pour quiconque n'est ni clinicien ni ingénieur ML. Tatakoto se place entre la publication brute et la couverture grand public, qui titre sur des press releases sans regarder la méthode.</p>
+      <h2>La méthode</h2>
+      <p>Chaque Décryptage suit une grille rigoureuse : architecture du modèle, données d'entraînement et leurs biais, comparateur honnête, métriques en termes ML ET en traduction clinique, limites de généralisation, accessibilité du modèle (code, poids, licence), conflits d'intérêts, maturité réglementaire. On nomme les modes d'échec spécifiques à l'IA-santé : data leakage, shortcut learning, biais de population, comparateurs biaisés.</p>
+      <h2>Multilingue</h2>
+      <p>Tatakoto publie en français, anglais, espagnol et chinois.</p>
+    `
+    },
+    en: {
+      title: "About",
+      description: "Tatakoto decodes research on AI applied to medicine. Method, transparency, team.",
+      body: `
+      <p class="lede"><strong>Tatakoto makes scientific research on artificial intelligence applied to medicine readable. Transformers for cancer detection, foundation models in imaging, clinical LLMs — we read the papers, explain them, and say what holds up and what doesn't.</strong></p>
+      <h2>The project</h2>
+      <p>AI × health research has become the engine of 21st century medicine. Thousands of papers appear each year — on cancer detection in digital pathology, foundation models in imaging, LLMs in clinical reasoning, AI in drug discovery. Nearly all of it remains unreadable to anyone who isn't both a clinician and an ML engineer. Tatakoto sits between the raw publication and mainstream coverage that headlines press releases without checking the method.</p>
+      <h2>The method</h2>
+      <p>Each decryption follows a rigorous grid: model architecture, training data and its biases, honest comparator, metrics in ML terms AND clinical translation, generalization limits, model accessibility (code, weights, license), conflicts of interest, regulatory maturity. We name AI-health-specific failure modes: data leakage, shortcut learning, population bias, biased comparators.</p>
+      <h2>Multilingual</h2>
+      <p>Tatakoto publishes in French, English, Spanish, and Chinese.</p>
+    `
+    },
+    es: {
+      title: "Acerca de",
+      description: "Tatakoto analiza la investigación sobre IA aplicada a la medicina. Método, transparencia, equipo.",
+      body: `
+      <p class="lede"><strong>Tatakoto hace legible la investigación científica sobre inteligencia artificial aplicada a la medicina. Transformers para detección de cáncer, foundation models en imagen, LLMs clínicos — leemos los artículos, los explicamos, y decimos qué es sólido y qué no.</strong></p>
+      <h2>El proyecto</h2>
+      <p>La investigación IA × salud se ha convertido en el motor de la medicina del siglo XXI. Miles de artículos aparecen cada año. Casi todos permanecen ilegibles para quien no es a la vez clínico e ingeniero de ML. Tatakoto se sitúa entre la publicación bruta y la cobertura general que titula sobre comunicados de prensa sin revisar el método.</p>
+      <h2>El método</h2>
+      <p>Cada análisis sigue una rejilla rigurosa: arquitectura del modelo, datos de entrenamiento y sus sesgos, comparador honesto, métricas en términos ML Y traducción clínica, límites de generalización, accesibilidad del modelo (código, pesos, licencia), conflictos de intereses, madurez regulatoria.</p>
+      <h2>Multilingüe</h2>
+      <p>Tatakoto publica en francés, inglés, español y chino.</p>
+    `
+    },
+    zh: {
+      title: "关于",
+      description: "Tatakoto解读AI在医学中应用的研究。方法、透明度、团队。",
+      body: `
+      <p class="lede"><strong>Tatakoto让人工智能在医学中应用的科学研究变得易读。用于癌症检测的Transformer、影像基础模型、临床大语言模型——我们阅读论文，加以解释，指出哪些站得住脚、哪些不能。</strong></p>
+      <h2>项目</h2>
+      <p>AI × 健康研究已成为21世纪医学的引擎。每年数千篇论文涌现——数字病理癌症检测、影像基础模型、临床推理大语言模型、AI药物发现。几乎所有内容对既非临床医生又非ML工程师的人而言难以阅读。Tatakoto处在原始论文与只看新闻稿不看方法的大众报道之间。</p>
+      <h2>方法</h2>
+      <p>每篇解读遵循严格框架：模型架构、训练数据及其偏倚、公正的对照、ML指标和临床转化、泛化局限、模型可访问性（代码、权重、许可证）、利益冲突、监管成熟度。我们指出AI医疗特有的失败模式：数据泄露、捷径学习、人群偏倚、有偏对照。</p>
+      <h2>多语言</h2>
+      <p>Tatakoto以法语、英语、西班牙语和中文发布。</p>
+    `
+    }
+  };
+  const c = content[lang];
+  return renderTemplate`${renderComponent($$result, "BaseLayout", $$BaseLayout, { "lang": lang, "title": c.title, "description": c.description, "translations": translations, "data-astro-cid-xxsk6khd": true }, { "default": ($$result2) => renderTemplate` ${maybeRenderHead()}<article class="prose about-body" data-astro-cid-xxsk6khd> ${renderComponent($$result2, "Fragment", Fragment, {}, { "default": ($$result3) => renderTemplate`${unescapeHTML(c.body)}` })} </article> ` })}`;
+}, "/sessions/pensive-inspiring-faraday/mnt/Tatakoto/repo/src/pages/[lang]/about.astro", void 0);
+
+const $$file = "/sessions/pensive-inspiring-faraday/mnt/Tatakoto/repo/src/pages/[lang]/about.astro";
+const $$url = "/[lang]/about";
+
+const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  default: $$About,
+  file: $$file,
+  getStaticPaths,
+  url: $$url
+}, Symbol.toStringTag, { value: 'Module' }));
+
+const page = () => _page;
+
+export { page };
